@@ -243,22 +243,20 @@ exports.testCmd = (socket,rl, id) => {
  * @param rl Objeto readline usado para implementar el CLI.
  */
 exports.playCmd = (socket, rl) => {
-	let resultado = 0;
-    let faltanPorResolver = [];
+    let resultado = 0;
+    
     models.quiz.findAll()
     .then(quizzes =>{
-        for(var i= 0; i< quizzes.length; i++){
-            faltanPorResolver.push(i);
-        }
+      
 
         const juego = () => {
-            if(faltanPorResolver.length===0){
+            if(quizzes.length===0){
             log(socket,'¡¡¡¡¡¡Has completado todas las preguntas!!!!!');
             log(socket,`SUS ACIERTOS SON: ${resultado}`);
         
             }else{
 
-                let id = Math.floor((Math.random()*faltanPorResolver.length));
+                let id = Math.floor((Math.random()*quizzes.length));
         
                 let quiz= quizzes[id];
 
@@ -270,7 +268,6 @@ exports.playCmd = (socket, rl) => {
                             log(socket,'CORRECTO', 'green');
                             resultado = resultado + 1;
                             log(socket,`Aciertos: ${resultado}`);
-                            faltanPorResolver.splice(id,1);
                             quizzes.splice(id,1);
                             juego();
 
